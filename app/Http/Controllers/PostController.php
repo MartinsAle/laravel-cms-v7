@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
 {
@@ -60,6 +61,44 @@ class PostController extends Controller
 
         auth()->user()->posts()->create($inputs);
 
+        session()->flash('post-create-message', 'Post was created.');
+
+        return redirect()->route('post.index');
+    }
+
+    public function edit(Post $post)
+    {
+        return view('admin.posts.edit', ['post' => $post]);
+    }
+
+    public function update(Post $post)
+    {
+        $inputs = request()->validate(
+            [
+                'title'         => 'required | min: 8 | max: 255',
+                'post_image'    => 'file',
+                'body'          => 'required'
+            ]
+        );
+
+        if (request('post_image')) {
+            $inputs['post_image'] = request('post_image')->store('images');
+            $post->post_image = $inputs['post_image'];
+        }
+
+        $post->title = $inputs['title'];
+        $post->body = $inputs['body'];
+
+        $post->update();
+        session()->flash('post-update-message', 'Post was update');
+
+        return redirect()->route('post.index');
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        session()->flash('post-delete-message', 'Post was deleted.');
         return back();
     }
 }

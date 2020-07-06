@@ -1,6 +1,13 @@
 <x-admin-master>
     @section('content')
         <h1 class="h3 mb-4 text-gray-800">Posts</h1>
+        @if (session('post-delete-message'))
+            <p class="alert alert-info">{{session('post-delete-message')}}</p>
+        @elseif(session('post-create-message'))
+            <p class="alert alert-success">{{session('post-create-message')}}</p>
+        @elseif(session('post-update-message'))
+            <p class="alert alert-info">{{session('post-update-message')}}</p>    
+        @endif
         <div class="card shadow mb-4">
             {{-- <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
@@ -10,49 +17,44 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
+                      <th>ID</th>
+                      <th>Image</th>
+                      <th>Owner</th>
+                      <th>Title</th>
+                      <th>Created</th>
+                      <th>Updated</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
+                      <th>ID</th>
+                      <th>Image</th>
+                      <th>Owner</th>
+                      <th>Title</th>
+                      <th>Created</th>
+                      <th>Updated</th>
+                      <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody>
-                    <tr>
-                      <td>Tiger Nixon</td>
-                      <td>System Architect</td>
-                      <td>Edinburgh</td>
-                      <td>61</td>
-                      <td>2011/04/25</td>
-                      <td>$320,800</td>
-                    </tr>
-                    <tr>
-                      <td>Garrett Winters</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>63</td>
-                      <td>2011/07/25</td>
-                      <td>$170,750</td>
-                    </tr>
-                    <tr>
-                      <td>Ashton Cox</td>
-                      <td>Junior Technical Author</td>
-                      <td>San Francisco</td>
-                      <td>66</td>
-                      <td>2009/01/12</td>
-                      <td>$86,000</td>
-                    </tr>
+                      @foreach ($posts as $post)
+                        <tr>
+                          <td>{{$post->id}}</td>
+                          <td><img src="{{$post->post_image}}" width="120" alt=""></td>
+                          <td>{{$post->user->name}}</td>
+                          <td><a href="{{ route('post.edit', $post->id) }}">{{$post->title}}</a></td>
+                          <td>{{$post->created_at->diffForHumans()}}</td>
+                          <td>{{$post->updated_at->diffForHumans()}}</td>
+                          <td>
+                                <form action="{{ route('post.destroy', $post->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">DELETE</button>
+                                </form>
+                          </td>
+                        </tr>
+                        @endforeach
                   </tbody>
                 </table>
               </div>
