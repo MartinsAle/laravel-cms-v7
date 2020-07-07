@@ -17,6 +17,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/post/{post}', 'PostController@show')->name('post');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group(
     ['middleware' => ['auth']],
@@ -27,6 +28,7 @@ Route::group(
         Route::get('/admin/posts/criar', 'PostController@create')->name('post.create');
         Route::post('/admin/posts', 'PostController@store')->name('post.store');
         Route::get('/admin/posts/{post}/editar', 'PostController@edit')->name('post.edit');
+        // Route::get('/admin/posts/{post}/editar', 'PostController@edit')->middleware('can:view,post')->name('post.edit');
         Route::delete('/admin/posts/{post}/delete', 'PostController@destroy')->name('post.destroy');
         Route::patch('/admin/posts/{post}/update', 'PostController@update')->name('post.update');
     }

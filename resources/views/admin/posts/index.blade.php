@@ -47,16 +47,23 @@
                           <td>{{$post->created_at->diffForHumans()}}</td>
                           <td>{{$post->updated_at->diffForHumans()}}</td>
                           <td>
+                              {{-- @can('view', $post) --}}
                                 <form action="{{ route('post.destroy', $post->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">DELETE</button>
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="submit" class="btn btn-danger">DELETE</button>
                                 </form>
+                              {{-- @endcan --}}
                           </td>
                         </tr>
                         @endforeach
                   </tbody>
                 </table>
+                <div class="d-flex">
+                  <div class="mx-auto">
+                    {{$posts->links()}}
+                  </div>
+                </div>
               </div>
             </div>
         </div>
@@ -67,6 +74,6 @@
         <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
         <!-- Page level custom scripts -->
-        <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+        {{-- <script src="{{ asset('js/demo/datatables-demo.js') }}"></script> --}}
     @endsection
 </x-admin-master>
