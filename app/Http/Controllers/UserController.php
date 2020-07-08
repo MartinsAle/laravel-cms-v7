@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $users = User::paginate(3);
+        return view('admin.users.index', ['users' => $users]);
+    }
+
     public function show(User $user)
     {
         return view('admin.users.profile', ['user' => $user]);
@@ -28,6 +34,13 @@ class UserController extends Controller
 
         $user->update($inputs);
 
+        return back();
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        session()->flash('user-delete-message', 'User has been deleted.');
         return back();
     }
 }

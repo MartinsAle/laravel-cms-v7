@@ -1,12 +1,8 @@
 <x-admin-master>
     @section('content')
-        <h1 class="h3 mb-4 text-gray-800">Posts</h1>
-        @if (session('post-delete-message'))
-            <p class="alert alert-info">{{session('post-delete-message')}}</p>
-        @elseif(session('post-create-message'))
-            <p class="alert alert-success">{{session('post-create-message')}}</p>
-        @elseif(session('post-update-message'))
-            <p class="alert alert-info">{{session('post-update-message')}}</p>    
+        <h1 class="h3 mb-4 text-gray-800">Users</h1>
+        @if (session('user-delete-message'))
+            <p class="alert alert-info">{{session('user-delete-message')}}</p>    
         @endif
         <div class="card shadow mb-4">
             {{-- <div class="card-header py-3">
@@ -14,13 +10,13 @@
             </div> --}}
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="usersDataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>ID</th>
                       <th>Image</th>
-                      <th>Owner</th>
-                      <th>Title</th>
+                      <th>Name</th>
+                      <th>Email</th>
                       <th>Created</th>
                       <th>Updated</th>
                       <th>Action</th>
@@ -30,25 +26,26 @@
                     <tr>
                       <th>ID</th>
                       <th>Image</th>
-                      <th>Owner</th>
-                      <th>Title</th>
+                      <th>Name</th>
+                      <th>Email</th>
                       <th>Created</th>
                       <th>Updated</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody>
-                      @foreach ($posts as $post)
+                      @foreach ($users as $user)
                         <tr>
-                          <td>{{$post->id}}</td>
-                          <td><img src="{{$post->post_image}}" width="120" alt=""></td>
-                          <td>{{$post->user->name}}</td>
-                          <td><a href="{{ route('post.edit', $post->id) }}">{{$post->title}}</a></td>
-                          <td>{{$post->created_at->diffForHumans()}}</td>
-                          <td>{{$post->updated_at->diffForHumans()}}</td>
+                          <td>{{$user->id}}</td>
+                          <td><img src="{{$user->avatar}}" class="img-profile rounded-circle" width="60" alt=""></td>
+                          {{-- <td><a href="{{ route('user.edit', $user->id) }}">{{$user->name}}</a></td> --}}
+                          <td>{{$user->name}}</td>
+                          <td>{{$user->email}}</td>
+                          <td>{{$user->created_at->diffForHumans()}}</td>
+                          <td>{{$user->updated_at->diffForHumans()}}</td>
                           <td>
-                              {{-- @can('view', $post) | can está relacionado com a policy PostPolicy; verifica a permissão --}}
-                                <form action="{{ route('post.destroy', $post->id) }}" method="post">
+                              {{-- @can('view', $post) --}}
+                                <form action="{{ route('user.destroy', $user->id) }}" method="post">
                                   @csrf
                                   @method('DELETE')
                                   <button type="submit" class="btn btn-danger">DELETE</button>
@@ -61,7 +58,7 @@
                 </table>
                 <div class="d-flex">
                   <div class="mx-auto">
-                    {{$posts->links()}}
+                    {{$users->links()}}
                   </div>
                 </div>
               </div>

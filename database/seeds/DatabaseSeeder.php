@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 10)->create()->each(
+        factory(User::class, 5)->create()->each(
             function ($user) {
                 $user->posts()->saveMany(factory(Post::class, 1)->make(['user_id' => NULL]));
             }
