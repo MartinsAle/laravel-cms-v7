@@ -38,8 +38,7 @@
                         <tr>
                           <td>{{$user->id}}</td>
                           <td><img src="{{$user->avatar}}" class="img-profile rounded-circle" width="60" alt=""></td>
-                          {{-- <td><a href="{{ route('user.edit', $user->id) }}">{{$user->name}}</a></td> --}}
-                          <td>{{$user->name}}</td>
+                          <td><a href="{{ route('user.profile.show', $user->id) }}">{{$user->name}}</a></td>
                           <td>{{$user->email}}</td>
                           <td>{{$user->created_at->diffForHumans()}}</td>
                           <td>{{$user->updated_at->diffForHumans()}}</td>
